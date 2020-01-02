@@ -1,6 +1,3 @@
-import data from '../data/truncated.json';
-// import data from '../data/UI Take Home Test - sales-orders.json';
-
 const getTotals = (graph, column, value) => ({
   _totals: {
     ...graph._totals,
@@ -33,7 +30,10 @@ const update = (graph, path, column, value) => {
   };
 };
 
-export const parse = ({ column, rows, metric }) => {
+export const parse = ({ column, data, rows, metric }) => {
+  if (!data || !data.length) {
+    return {};
+  }
   const result = data.reduce((acc, record) => {
     const recordValue = record[metric];
 

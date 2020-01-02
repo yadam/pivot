@@ -1,3 +1,5 @@
+// This is a CRA boilerplate file. Don't collect coverage
+/* istanbul ignore file */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
