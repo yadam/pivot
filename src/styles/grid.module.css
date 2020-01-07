@@ -1,0 +1,73 @@
+.cell {
+  padding: 0.5rem 1rem;
+  text-align: right;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.header {
+  composes: cell;
+  font-weight: normal;
+  text-align: left;
+  text-transform: capitalize;
+}
+
+.rowHeader {
+  composes: header;
+  background-color: #f5f5f5;
+}
+
+.columnHeader {
+  composes: header;
+  color: #99a9c7;
+  background-color: #022972;
+}
+
+.columnHeader.primary {
+  color: #ffffff;
+  font-weight: bold;
+  padding: 1rem;
+}
+
+.columnHeader.center {
+  text-align: center;
+}
+
+.dataRow th:first-child:not(:only-of-type) {
+  font-weight: bold;
+}
+
+.totalRow {
+  background-color: #eeeeee;
+  border-top: solid thin #dddddd;
+  border-bottom: solid thin #dddddd;
+  font-weight: bold;
+}
+
+.totalRow .rowHeader {
+  background-color: #eeeeee;
+  font-weight: bold;
+}
+
+.totalRow .header,
+.columnHeader:last-child {
+  text-transform: none;
+}
+
+.totalRow + .dataRow .cell,
+.totalRow + .dataRow .rowHeader {
+  padding-top: 2.5rem;
+}
+
+.totalRow:last-child {
+  background-color: #000000;
+  color: #fff;
+  border-top: solid thin #000000;
+  border-bottom: solid thin #000000;
+}
+
+.totalRow:last-child .cell,
+.totalRow:last-child .rowHeader {
+  background-color: #000000;
+  padding: 1rem;
+}
