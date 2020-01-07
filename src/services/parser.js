@@ -50,22 +50,19 @@ export const parse = ({ column, data, rows, metric }) => {
       return {
         graph: update(acc.graph, rowValues, columnValue, recordValue),
         // collect the possible column names with a boolean object for deduplication
-        columns: { ...acc.columns, [columnValue]: true },
+        foundColumns: { ...acc.foundColumns, [columnValue]: true },
       };
     },
-    { graph: {}, columns: {} }
+    { graph: {}, foundColumns: {} }
   );
 
   // convert boolean object to sorted string array
-  result.columns = Object.keys(result.columns).sort();
-  return result;
+  const columns = Object.keys(result.foundColumns).sort();
+  return { graph: result.graph, columns };
 };
 
 // const result = {
-//   columns: {
-//     Alabama: true,
-//     Arizona: true,
-//   },
+//   columns: ['Alabama', 'Arizona'],
 //   graph: {
 //     _totals: {
 //       _subtotal: 1560,
