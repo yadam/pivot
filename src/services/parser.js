@@ -1,13 +1,16 @@
+import { INTERNAL_TOTAL_BRANCH, INTERNAL_SUBTOTAL_VALUE } from '../constants';
+
 const getTotals = (graph, column, value) => ({
-  _totals: {
-    ...graph._totals,
+  [INTERNAL_TOTAL_BRANCH]: {
+    ...graph[INTERNAL_TOTAL_BRANCH],
     [column]:
-      graph._totals && graph._totals[column]
-        ? graph._totals[column] + value
+      graph[INTERNAL_TOTAL_BRANCH] && graph[INTERNAL_TOTAL_BRANCH][column]
+        ? graph[INTERNAL_TOTAL_BRANCH][column] + value
         : value,
-    _subtotal:
-      graph._totals && graph._totals._subtotal
-        ? graph._totals._subtotal + value
+    [INTERNAL_SUBTOTAL_VALUE]:
+      graph[INTERNAL_TOTAL_BRANCH] &&
+      graph[INTERNAL_TOTAL_BRANCH][INTERNAL_SUBTOTAL_VALUE]
+        ? graph[INTERNAL_TOTAL_BRANCH][INTERNAL_SUBTOTAL_VALUE] + value
         : value,
   },
 });
@@ -32,67 +35,83 @@ const update = (graph, path, column, value) => {
 
 export const parse = ({ column, data, rows, metric }) => {
   if (!data || !data.length) {
-    return {};
+    return { graph: {}, columns: [] };
   }
-  const result = data.reduce((acc, record) => {
-    const recordValue = record[metric];
+  const result = data.reduce(
+    (acc, record) => {
+      const recordValue = record[metric];
 
-    // get row values i.e. [ 'Furniture', 'Bookcases' ]
-    const rowValues = rows.map(row => record[row]);
-    // get column values i.e. 'California'
-    const columnValue = record[column];
+      // get row values i.e. [ 'Furniture', 'Bookcases' ]
+      const rowValues = rows.map(row => record[row]);
+      // get column values i.e. 'California'
+      const columnValue = record[column];
 
-    // update the graph
-    return update(acc, rowValues, columnValue, recordValue);
-  }, {});
+      // update the graph
+      return {
+        graph: update(acc.graph, rowValues, columnValue, recordValue),
+        // collect the possible column names with a boolean object for deduplication
+        columns: { ...acc.columns, [columnValue]: true },
+      };
+    },
+    { graph: {}, columns: {} }
+  );
+
+  // convert boolean object to sorted string array
+  result.columns = Object.keys(result.columns).sort();
   return result;
 };
 
 // const result = {
-//   _totals: {
-//     _subtotal: 1560,
-//     Alabama: 850,
-//     Arizona: 710,
+//   columns: {
+//     Alabama: true,
+//     Arizona: true,
 //   },
-//   Furniture: {
+//   graph: {
 //     _totals: {
-//       _subtotal: 890,
-//       Alabama: 600,
-//       Arizona: 290,
+//       _subtotal: 1560,
+//       Alabama: 850,
+//       Arizona: 710,
 //     },
-//     Bookcases: {
+//     Furniture: {
 //       _totals: {
-//         _subtotal: 740,
-//         Alabama: 500,
-//         Arizona: 240,
+//         _subtotal: 890,
+//         Alabama: 600,
+//         Arizona: 290,
+//       },
+//       Bookcases: {
+//         _totals: {
+//           _subtotal: 740,
+//           Alabama: 500,
+//           Arizona: 240,
+//         },
+//       },
+//       Chairs: {
+//         _totals: {
+//           _subtotal: 150,
+//           Alabama: 100,
+//           Arizona: 50,
+//         },
 //       },
 //     },
-//     Chairs: {
+//     'Office Supplies': {
 //       _totals: {
-//         _subtotal: 150,
-//         Alabama: 100,
-//         Arizona: 50,
+//         _subtotal: 670,
+//         Alabama: 250,
+//         Arizona: 420,
 //       },
-//     },
-//   },
-//   'Office Supplies': {
-//     _totals: {
-//       _subtotal: 670,
-//       Alabama: 250,
-//       Arizona: 420,
-//     },
-//     Appliances: {
-//       _totals: {
-//         _subtotal: 600,
-//         Alabama: 200,
-//         Arizona: 400,
+//       Appliances: {
+//         _totals: {
+//           _subtotal: 600,
+//           Alabama: 200,
+//           Arizona: 400,
+//         },
 //       },
-//     },
-//     Art: {
-//       _totals: {
-//         _subtotal: 70,
-//         Alabama: 50,
-//         Arizona: 20,
+//       Art: {
+//         _totals: {
+//           _subtotal: 70,
+//           Alabama: 50,
+//           Arizona: 20,
+//         },
 //       },
 //     },
 //   },

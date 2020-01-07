@@ -9,7 +9,7 @@ describe('parser', () => {
       rows: ['category', 'subCategory'],
       metric: 'sales',
     });
-    expect(actual).toEqual({});
+    expect(actual).toEqual({ graph: {}, columns: [] });
   });
 
   it('should handle an undefined data set', () => {
@@ -18,7 +18,7 @@ describe('parser', () => {
       rows: ['category', 'subCategory'],
       metric: 'sales',
     });
-    expect(actual).toEqual({});
+    expect(actual).toEqual({ graph: {}, columns: [] });
   });
 
   it('should parse a data set', () => {
@@ -28,12 +28,14 @@ describe('parser', () => {
       rows: ['category', 'subCategory'],
       metric: 'sales',
     });
-    expect(actual._totals._subtotal).toEqual(1125711.7606999937);
-    expect(actual._totals.California).toEqual(216003.7804999998);
-    expect(actual._totals.Illinois).toEqual(39405.39499999999);
-    expect(actual.Technology._totals.Georgia).toEqual(5178.299999999998);
-    expect(actual.Furniture._totals.Massachusetts).toEqual(5854.814999999999);
-    expect(actual.Furniture.Bookcases._totals.Florida).toEqual(231.92);
-    expect(actual.Technology.Phones._totals.Nevada).toEqual(911.984);
+    expect(actual.graph._totals._subtotal).toEqual(1125711.7606999937);
+    expect(actual.graph._totals.California).toEqual(216003.7804999998);
+    expect(actual.graph._totals.Illinois).toEqual(39405.39499999999);
+    expect(actual.graph.Technology._totals.Georgia).toEqual(5178.299999999998);
+    expect(actual.graph.Furniture._totals.Massachusetts).toEqual(
+      5854.814999999999
+    );
+    expect(actual.graph.Furniture.Bookcases._totals.Florida).toEqual(231.92);
+    expect(actual.graph.Technology.Phones._totals.Nevada).toEqual(911.984);
   });
 });

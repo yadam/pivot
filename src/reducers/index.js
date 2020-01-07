@@ -1,5 +1,5 @@
-import data from '../data/truncated.json';
-// import data from '../data/UI Take Home Test - sales-orders.json';
+// import data from '../data/truncated.json';
+import data from '../data/UI Take Home Test - sales-orders.json';
 
 // action types
 const getDataType = 'GET_DATA';
