@@ -5,6 +5,19 @@
   vertical-align: top;
 }
 
+.tableHeader {
+  display: flex;
+  width: 100%;
+}
+
+.tableHeader .name {
+  width: 25%;
+}
+
+.tableHeader .columnName {
+  width: 75%;
+}
+
 .header {
   composes: cell;
   font-weight: normal;

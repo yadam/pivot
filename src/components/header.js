@@ -17,18 +17,6 @@ export const Header = ({ columnName, columns, name, rows }) => {
   return (
     <thead>
       <tr>
-        <th className={`${styles.columnHeader} ${styles.primary}`}>
-          {name ? name.toUpperCase() : ''}
-        </th>
-        {spacers}
-        <th
-          className={`${styles.columnHeader} ${styles.primary} ${styles.center}`}
-          colSpan={columns.length + 1}
-        >
-          {columnName.toUpperCase()}
-        </th>
-      </tr>
-      <tr>
         {rows
           .concat(columns)
           .concat(['Grand total'])

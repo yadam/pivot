@@ -3,6 +3,7 @@ import React from 'react';
 import { parse } from '../services/parser';
 import { Header } from './header';
 import { Body } from './body';
+import { TableHeader } from './tableHeader';
 import styles from '../styles/pivot.module.css';
 
 export const Pivot = ({ column, data, metric, name, rows }) => {
@@ -13,6 +14,7 @@ export const Pivot = ({ column, data, metric, name, rows }) => {
   }
   return (
     <div className={styles.pivot}>
+      <TableHeader columnName={column} name={name} />
       <table className={styles.table}>
         <Header columnName={column} columns={columns} name={name} rows={rows} />
         <Body columns={columns} data={graph} rows={rows} />
